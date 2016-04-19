@@ -7,18 +7,54 @@
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script> 
+      $(document).ready(function() {
+        $('#button').click(function(){
+          console.log('button clicked');
+          // console.log($('#Name').val());
+          // console.log($('#UO_ID').val());
+          name_input= $('#Name').val();
+          uoid_input=$("#UO_ID").val(); 
+          phone_input=$("Phone_number").val(); 
+          party_input=$("Party_size").val(); 
+          currentLocation_input=$("Location").val(); 
+          time_input=$("Time");
+          dropLocation_input=$("Drop-off").val(); 
+          additionalInfo_input=$("Additional_info").val();      
+          $.post("http://localhost:3000/submitInfoFromClient", {
+            name : name_input, 
+            uoid: uoid_input,
+            phone: phone_input,
+            party: party_input,
+            currentLocation: currentLocation_input,
+            time: time_intput,
+            dropLocation: dropLocation_input,
+            additionalInfo: additionalInfo_input},
+            function(data){
+            console.log(data);  
+          });
+        });
+        $('#dispatch').click(function(){
+          console.log('dispatch clicked');
+            
+          $.post("http://localhost:3000/dispatchQuery",null, function(resp) {
+              console.log(resp);
+              $("#dispatchDiv").append ("Name: "+ resp.name + '<br>');
+              $("#dispatchDiv").append ("UO ID number: "+resp.uoid+ "<br>");
+          });
+        });     
+    });
+    </script>
 	</head>
 	<body>
-		<div class="container">
-				<div class="jumbotron">
-					<h1>
-					~Saferide~
-					</h1>
-				</div>
-				
-				<form class="form-horizontal" role="form">
-			
+		<div class="container">	
+			<div class="jumbotron">
+				<h1>
+				~Saferide~
+				</h1>
+			</div>
 					<p class="text-left">Request a pick-up: </p>
   					
   					<div class="form-group">
@@ -28,7 +64,7 @@
   				
   					<div class="form-group">
     					<label class="sr-only" for="UO ID">UOID</label>
-    					<input type="number" class="form-control" id="UOID" placeholder="Enter UO ID #" required>
+    					<input type="number" class="form-control" id="UO_ID" placeholder="Enter UO ID #" required>
   					</div>
   				
   					<div class="form-group">
@@ -63,15 +99,21 @@
     					</label>
   				
   					</div>
-  					<div class="form-group">
-    					<label class="sr-only" for="Additional info">Additional info</label>
-  						<textarea class="form-control" rows="3" id="info" placeholder="Additional info..."></textarea>
-					</div>
-					
-  					<button type="submit" class="btn btn-default" id="button" >Submit</button>
   				
+  				<div class="form-group">
+    				<label class="sr-only" for="Additional info" id="info">Additional info</label>
+  					<textarea class="form-control" rows="3" placeholder="Additional info..."></textarea>
+  				</div>	
+  				<button type="submit" class="btn btn-default" id="button" >Submit</button>
+  				
+			</form>
+			
+			<hr>
+			<p class="text-center"> 1228 University St, Eugene, OR 97403 <br> 
+			541-346-RIDE ex 2 </p>
+
+      <button type="dispatch" class="btn btn-default" id="dispatch" >DISPATCH</button> 
+      <div id="dispatchDiv"></div>
 		</div>
-		<p class="text-center"> 1228 University St, Eugene, OR 97403 
-			<br> 541-346-RIDE ex 2 </p> 
 	</body>
 </html>

@@ -1,10 +1,10 @@
 .jumbotron{
-background-image: url("saferide_banner.png"); !important;
-background-size:100% 100%;
+	background-image: url("saferide_banner.png"); !important;
+	background-size:100% 100%;
 
-color: transparent; !important;
-text-align: center;
-font-size: 80px;
+	color: transparent; !important;
+	text-align: center;
+	font-size: 80px;
 
 }
 
