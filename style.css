@@ -8,12 +8,23 @@
 
 }
 
-input[type=text] {
+hr{
+	color: #243c83;
+	border-color: #243c83;
+}
+
+.btn btn-default{
+	margin-bottom: 15 px; !important
+}
+
+body{
+	background-image: url("bkg.png");
+}
+
+textarea[type=text] {
     visibility:hidden;
 }
 
-input[type=checkbox]:checked + input[type=text] {
+input[type=checkbox]:checked + textarea[type=text] {
     visibility:visible;
-    
-    width:975px;
 }
