@@ -14,7 +14,7 @@ var riderSchema = mongoose.Schema({
     uoid: Number,
     phone: Number,
     partySize: Number,
-    time: Number,
+    time: String,
     currentLocation: String,
     dropLocation: String,
     additionalInfo: String,
@@ -56,7 +56,7 @@ app.post('/submitInfoFromClient',function(req,res){
   var nameFromClient=req.body.name; 
   var uoidFromClient=req.body.uoid;
   var phoneFromClient=req.body.phone;
-  var partySizeFromClient=req.body.partySize;
+  var partySizeFromClient=req.body.party;
   var timeFromClient=req.body.time;
   var currentLocationFromClient=req.body.currentLocation;
   var dropLocationFromClient=req.body.dropLocation;
@@ -85,12 +85,25 @@ app.post('/submitInfoFromClient',function(req,res){
 });
 
 app.post('/dispatchQuery',function(req,toClient){
-  Rider.findOne(function(err,res){
+  Rider.find(function(err,res){
     if (err)return console.error(err);
     console.log(res);
     toClient.send(res);
     // toClient.send("Information you wanted");
   });
+});
+
+app.post('/clear',function(req,toClient){
+  Rider.find(function(err,res){
+    if (err)return console.error(err);
+    for(x=0;x<res.length;x++){
+      res[x].remove();
+    }
+    
+  });
+
+  console.log("Cleared Rider");
+  // console.log(Rider.getCollectionInfos());
 });
 
 app.listen(3000,function(){

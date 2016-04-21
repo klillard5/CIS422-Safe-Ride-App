@@ -12,39 +12,54 @@
     <script> 
       $(document).ready(function() {
         $('#button').click(function(){
-          console.log('button clicked');
-          // console.log($('#Name').val());
-          // console.log($('#UO_ID').val());
           name_input= $('#Name').val();
           uoid_input=$("#UO_ID").val(); 
-          phone_input=$("Phone_number").val(); 
-          party_input=$("Party_size").val(); 
-          currentLocation_input=$("Location").val(); 
-          time_input=$("Time");
-          dropLocation_input=$("Drop-off").val(); 
-          additionalInfo_input=$("Additional_info").val();      
+          phone_input=$("#Phone_number").val(); 
+          party_input=$("#Party_size").val(); 
+          currentLocation_input=$("#Location").val(); 
+          time_input=$("#Time").val();
+          dropLocation_input=$("#Drop-off").val(); 
+          additionalInfo_input=$("#Additional_info").val();      
           $.post("http://localhost:3000/submitInfoFromClient", {
             name : name_input, 
             uoid: uoid_input,
             phone: phone_input,
             party: party_input,
             currentLocation: currentLocation_input,
-            time: time_intput,
+            time: time_input,
             dropLocation: dropLocation_input,
             additionalInfo: additionalInfo_input},
-            function(data){
-            console.log(data);  
+            function(data){ 
           });
         });
         $('#dispatch').click(function(){
           console.log('dispatch clicked');
+          
             
           $.post("http://localhost:3000/dispatchQuery",null, function(resp) {
-              console.log(resp);
-              $("#dispatchDiv").append ("Name: "+ resp.name + '<br>');
-              $("#dispatchDiv").append ("UO ID number: "+resp.uoid+ "<br>");
+              console.log(resp.length);
+              var length =resp.length;
+              for (x=0;x<length;x++){
+
+                $("#dispatchDiv").append ("Rider Number: "+(x+1) + '<br>');
+                $("#dispatchDiv").append ("Name: "+ resp[x].name + '<br>');
+                $("#dispatchDiv").append ("UO ID number: "+resp[x].uoid+ "<br>");
+                $("#dispatchDiv").append ("Phone Number: "+ resp[x].phone + '<br>');
+                $("#dispatchDiv").append ("Party Size: "+ resp[x].partySize + '<br>');
+                $("#dispatchDiv").append ("Requested Time: "+ resp[x].time + '<br>');
+                $("#dispatchDiv").append ("Current Location: "+ resp[x].currentLocation + '<br>');
+                $("#dispatchDiv").append ("Drop off Location: "+ resp[x].dropLocation + '<br>');
+                $("#dispatchDiv").append ("Additional Info: "+ resp[x].additionalInfo + '<br>');
+                $("#dispatchDiv").append ('<br>');
+              }
           });
-        });     
+        });
+        $('#clear').click(function(){
+          console.log('clear clicked'); 
+          $("#dispatchDiv").text(" ");
+          $.post("http://localhost:3000/clear",null, function(resp) {         
+          });
+        });      
     });
     </script>
 	</head>
@@ -72,12 +87,12 @@
   				
   				<div class="form-group">
     				<label class="sr-only" for="Phone number">Phone</label>
-    				<input type="phone number" class="form-control" id="Phone number" placeholder="Enter phone number">
+    				<input type="phone number" class="form-control" id="Phone_number" placeholder="Enter phone number">
   				</div>
   				
   				<div class="form-group">
     				<label class="sr-only" for="Party size">Party size</label>
-    				<input type="party size" class="form-control" id="Party size" placeholder="Enter party size">
+    				<input type="party size" class="form-control" id="Party_size" placeholder="Enter party size">
   				</div>
 
           <div class="form-group">
@@ -103,7 +118,7 @@
   				</div>
   				<div class="form-group">
     				<label class="sr-only" for="Additional info" id="info">Additional info</label>
-  					<textarea class="form-control" rows="3" placeholder="Additional info..."></textarea>
+  					<textarea class="form-control" rows="3" id="Additional_info" placeholder="Additional info..."></textarea>
   				</div>	
   				<button type="submit" class="btn btn-default" id="button" >Submit</button>
   				
@@ -111,8 +126,9 @@
 			
 			<p class="text-center"> 541-346-RIDE ex 2 </p>
 
-      <button type="dispatch" class="btn btn-default" id="dispatch" >DISPATCH</button> 
+      <button class="btn btn-default" id="dispatch" >DISPATCH</button> 
       <div id="dispatchDiv"></div>
+      <button class="btn btn-default" id="clear" >Clear Riders</button> 
 		</div>
 	</body>
 </html>
