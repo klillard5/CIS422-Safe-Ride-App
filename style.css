@@ -14,17 +14,18 @@ hr{
 }
 
 .btn btn-default{
-	margin-bottom: 15 px; !important
+	margin-bottom: 15 px !important;
 }
 
 body{
 	background-image: url("bkg.png");
 }
 
-textarea[type=text] {
+input[type=text] {
     visibility:hidden;
 }
 
-input[type=checkbox]:checked + textarea[type=text] {
+input[type=checkbox]:checked + input[type=text] {
     visibility:visible;
+    width: 700px !important;
 }
