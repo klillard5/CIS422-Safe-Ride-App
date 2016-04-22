@@ -37,6 +37,7 @@
           
             
           $.post("http://localhost:3000/dispatchQuery",null, function(resp) {
+              console.log(jQuery.type(resp));
               console.log(resp.length);
               var length =resp.length;
               for (x=0;x<length;x++){
